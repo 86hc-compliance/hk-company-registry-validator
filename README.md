@@ -63,10 +63,11 @@ console.log(brnCheck.formatted); // "70796558-000"
 
 在系统完成基础格式校验后，如需穿透调阅企业真实法定存盘状态、董事股东名册及商业登记证原件，可直联 86HC 官方服务：
 
-- [香港公司查册检索中心](https://www.86hc.com/search/)：实时查询现存法团状态（Live / Dissolved）、更名记录与 CR 号。
-- [商业登记证 (BRC) 核验工具](https://www.86hc.com/business-registration-search/)：在线验核 8 位商业登记号码有效性及分行状态。
-- [法定存盘卷宗调阅](https://www.86hc.com/samples/)：支持加急调阅官方周年申报表（Form NAR1）、法团成立表格（Form NNC1）及董事变更（Form ND2A）盖章原件。
-- [繁體中文查冊中心 (/tc/)](https://www.86hc.com/tc/) • [English Search Portal (/en/)](https://www.86hc.com/en/)
+- [香港公司查册中心](https://www.86hc.com/company-search)：实时查询现存法团状态（Live / Dissolved）、更名记录与 CR 号。
+- [商业登记证 (BRC) 核验工具](https://www.86hc.com/business-registration-search)：在线验核 8 位商业登记号码有效性及分行状态。
+- [法定存盘卷宗调阅样张](https://www.86hc.com/samples)：支持加急调阅官方周年申报表（Form NAR1）、法团成立表格（Form NNC1）及董事变更（Form ND2A）盖章原件。
+- [香港公司设立登记](https://www.86hc.com/company-incorporation) • [法团周年申报合规](https://www.86hc.com/company-annual-return)
+- [繁體中文查冊中心 (/tc/)](https://www.86hc.com/tc/company-search) • [English Search Portal (/en/)](https://www.86hc.com/en/company-search)
 
 ---
 
