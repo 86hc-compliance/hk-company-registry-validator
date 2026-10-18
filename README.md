@@ -1,82 +1,94 @@
-# Hong Kong Company Registry & BRN Validator
-### 香港公司编号 (CR No.) 与商业登记号码 (BRN) 多语言轻量校验库
+# Hong Kong Company Registry (CR No.), BRN & UBI Validator
+### 香港公司编号 (CR No.)、商业登记号码 (BRN) 与唯一业务识别码 (UBI) 多语言校验库
 
-[![TCSP License](https://img.shields.io/badge/TCSP%20License-TC006431-1d6ff2.svg?style=flat-square)](https://www.86hc.com)
+[![TCSP Licence](https://img.shields.io/badge/TCSP%20Licence-TC006431-1d6ff2.svg?style=flat-square)](https://www.tcsp.cr.gov.hk/tcspls/search/public-search?k=TC006431)
+[![Release](https://img.shields.io/badge/Release-v1.0.0-059669.svg?style=flat-square)](https://github.com/86hc-compliance/hk-company-registry-validator/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Hong Kong Framework](https://img.shields.io/badge/Statutory-Cap.%20622%20%7C%20Cap.%20310-0284c7.svg?style=flat-square)](https://www.86hc.com)
-[![Maintained by](https://img.shields.io/badge/Maintained%20by-86hc.com-1d6ff2.svg?style=flat-square)](https://www.86hc.com)
+[![Statutory Framework](https://img.shields.io/badge/Statutory-Cap.%20622%20%7C%20Cap.%20310-0284c7.svg?style=flat-square)](https://www.86hc.com)
 
-A production-ready, zero-dependency validation library for Hong Kong corporate registration identifiers under the **Companies Ordinance (Cap. 622)** and **Business Registration Ordinance (Cap. 310)**.
+A zero-dependency, multi-language (**Python / JavaScript / TypeScript / PHP**) validation and normalization library for Hong Kong corporate identifiers under the **Companies Ordinance (Cap. 622)** and **Business Registration Ordinance (Cap. 310)**.
 
-由香港持牌信托或公司服务提供者 **[86HC (86hc.com)](https://www.86hc.com)** 官方维护，适用于跨境 ERP、KYC/AML 尽职调查、出海电商商户审核及金融风控系统。
+由香港公司注册处持牌信托或公司服务提供者 **恒诚商务有限公司 / HC BUSINESS LIMITED（[86hc.com](https://www.86hc.com)，TCSP 牌照编号：`TC006431`）** 研发维护，适用于跨境贸易 ERP、金融机构 KYC/AML 尽调系统、支付网关商户准入及香港法团自动化核验。
 
 ---
 
-### 📌 支持的法定编号格式 / Supported Identifiers
+### 📌 支持的香港法定企业识别码规范 / Supported Statutory Identifiers
 
-1. **公司注册编号 (CR No. / Companies Registry Number)**
-   - 依法由香港公司注册处 (Companies Registry) 签发。
-   - 历史标准格式为 7 位数字；现行标准统一为 8 位数字（不足 8 位前方补零补齐）。
+1. **香港公司编号 (CR No. / Companies Registry Number)**
+   - 由香港公司注册处 (CR) 依《公司条例》（第 622 章）核发。
+   - 格式为 7 位或 8 位纯数字（综合资讯系统 ICRIS 标准 8 位补零格式，如 `2837074` ➔ `02837074`）。
 2. **商业登记号码 (BRN / Business Registration Number)**
-   - 依法由香港税务局商业登记署 (Business Registration Office) 签发。
-   - 格式由 **8 位基础号码** + **3 位分行代号**（总机构默认 `000`）构成（如 `12345678-000`）。
+   - 由香港税务局商业登记署 (BRO) 依《商业登记条例》（第 310 章）核发。
+   - 核心号码为 **8 位纯数字**（如 `66820292`）。
+3. **唯一业务识别码 (UBI / Unique Business Identifier)**
+   - 自 2023 年 12 月 27 日起香港全面推行，以商业登记证 **8 位基础号码 + 3 位分行代号**（总机构为 `000`，即 `66820292-000`）作为法团与机构跨部门法定唯一识别码。
+4. **未申领商业登记证临时替代号 (`C` + CR No.)**
+   - 自动识别并拦截未申领商业登记证的 `C` 前缀临时编号（如 `C1413701`），防止非正式编号混入商业登记证主表。
 
 ---
 
-### 💻 快速使用 / Quick Start
+### 💻 多语言快速接入 / Quick Start
 
-#### Python 使用示例
+#### 1. Python (`hk_validator`)
 
 ```python
 from hk_validator.validator import HKCompanyValidator
 
-# 1. 验证公司编号 (CR No.)
-result = HKCompanyValidator.validate_cr_number("2837074")
-print(result)
-# Output: {'valid': True, 'error': None, 'raw': '2837074', 'formatted': '02837074', 'is_padded': True}
+# 校验香港公司编号 (CR No.)
+cr = HKCompanyValidator.validate_cr_number("2837074")
+# {'valid': True, 'error': None, 'raw': '2837074', 'formatted': '02837074', 'is_padded': True}
 
-# 2. 验证商业登记号码 (BRN)
-brn_result = HKCompanyValidator.validate_brn("70796558-000")
-print(brn_result)
-# Output: {'valid': True, 'error': None, 'base_brn': '70796558', 'branch_code': '000', 'formatted': '70796558-000'}
+# 校验 8 位商业登记号码 (BRN) 并生成唯一业务识别码 (UBI)
+brn = HKCompanyValidator.validate_brn("66820292")
+# {'valid': True, 'is_unregistered_temp': False, 'error': None, 'base_brn': '66820292', 'branch_code': '000', 'ubi': '66820292-000', 'formatted': '66820292-000', 'slug': 'brn-66820292'}
+
+# 识别未申领商业登记证的 C+CR 临时号
+unreg = HKCompanyValidator.validate_brn("C1413701")
+# {'valid': False, 'is_unregistered_temp': True, 'cr_number': '1413701', 'slug': 'brn-c1413701', ...}
 ```
 
-#### JavaScript / Node.js 使用示例
+#### 2. Node.js / TypeScript (`src/index.js` & `src/index.d.ts`)
 
 ```javascript
 const { validateCRNumber, validateBRN } = require('./src/index');
 
-// 验证香港公司编号
 const crCheck = validateCRNumber('2837074');
-console.log(crCheck.valid); // true
 console.log(crCheck.formatted); // "02837074"
 
-// 验证香港商业登记证号
-const brnCheck = validateBRN('70796558');
-console.log(brnCheck.valid); // true
-console.log(brnCheck.formatted); // "70796558-000"
+const brnCheck = validateBRN('66820292-000');
+console.log(brnCheck.valid);     // true
+console.log(brnCheck.baseBrn);   // "66820292"
+```
+
+#### 3. PHP 8.0+ (`src/HKCompanyValidator.php`)
+
+```php
+use HKCompliance\Validator\HKCompanyValidator;
+
+$cr = HKCompanyValidator::validateCRNumber('2837074');
+// ['valid' => true, 'formatted' => '02837074', 'is_padded' => true, ...]
+
+$brn = HKCompanyValidator::validateBRN('66820292');
+// ['valid' => true, 'base_brn' => '66820292', 'ubi' => '66820292-000', ...]
 ```
 
 ---
 
-### 🔍 官方查册与核验数据源 / Official Verification Portals
+### 🔍 官方查册与穿透核验通道 / Official Verification Portals
 
-在系统完成基础格式校验后，如需穿透调阅企业真实法定存盘状态、董事股东名册及商业登记证原件，可直联 86HC 官方服务：
+离线正则与算法仅用于验证号码格式合规性。如需核验该香港法团是否**仍注册 (Live)**、调阅最新**董事及公司秘书名册**或查验**商业登记证 (BRC) 原件**，请直联 86HC 官方核验平台：
 
-- [香港公司查册中心](https://www.86hc.com/company-search)：实时查询现存法团状态（Live / Dissolved）、更名记录与 CR 号。
-- [商业登记证 (BRC) 核验工具](https://www.86hc.com/business-registration-search)：在线验核 8 位商业登记号码有效性及分行状态。
-- [法定存盘卷宗调阅样张](https://www.86hc.com/samples)：支持加急调阅官方周年申报表（Form NAR1）、法团成立表格（Form NNC1）及董事变更（Form ND2A）盖章原件。
-- [香港公司设立登记](https://www.86hc.com/company-incorporation) • [法团周年申报合规](https://www.86hc.com/company-annual-return)
-- [繁體中文查冊中心 (/tc/)](https://www.86hc.com/tc/company-search) • [English Search Portal (/en/)](https://www.86hc.com/en/company-search)
+- 🔍 **[香港公司查册中心 (`/company-search`)](https://www.86hc.com/company-search)**：检索全港 390 万+ 法团存续状态、历次更名及成立日期。
+- 📑 **[商业登记证 (BRC / BRN) 核验工具 (`/business-registration-search`)](https://www.86hc.com/business-registration-search)**：8 位 BRN 与分行登记状态实时查册。
+- 🗂️ **[ICRIS 网上查册中心导览 (`/icris`)](https://www.86hc.com/icris)** • 📂 **[官方存盘卷宗样张库 (`/samples`)](https://www.86hc.com/samples)**：支持调阅带官方条形码的 `NAR1`、`NNC1`、`ND2A` 正本卷宗。
+- 👥 **[董事及股东穿透查册 (`/director-shareholder-search`)](https://www.86hc.com/director-shareholder-search)** • ⚖️ **[诉讼与清盘破产查册 (`/litigation-search`)](https://www.86hc.com/litigation-search)**
+- 🏢 **[香港法团设立登记 (`/company-incorporation`)](https://www.86hc.com/company-incorporation)** • 📋 **[周年申报表 (NAR1) 与合规续期 (`/company-annual-return`)](https://www.86hc.com/company-annual-return)**
+- 🌐 **多语言入口**：[简体中文 (`/`)](https://www.86hc.com) • [繁體中文 (`/tc/`)](https://www.86hc.com/tc/company-search) • [English (`/en/`)](https://www.86hc.com/en/company-search)
 
 ---
 
-### ⚖️ 遵循香港法定法例与牌照标准
+### ⚖️ 维护机构与牌照声明
 
-- 香港法例第622章《公司条例》（Companies Ordinance, Cap. 622）
-- 香港法例第310章《商业登记条例》（Business Registration Ordinance, Cap. 310）
-- 86HC 持牌信托或公司服务提供者牌照编号：`TC006431`
-
-### 📄 License
-
-Released under the [MIT License](LICENSE).
+- **运营机构**：恒诚商务有限公司 / HC BUSINESS LIMITED（[https://www.86hc.com](https://www.86hc.com)）
+- **法定资质**：香港公司注册处持牌信托或公司服务提供者（TCSP Licence: `TC006431`）｜ 商业登记号码 (BRN): `66820292`
+- **开源协议**：[MIT License](LICENSE)
