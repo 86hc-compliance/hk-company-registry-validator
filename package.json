@@ -1,0 +1,23 @@
+{
+  "name": "@86hc/company-registry-validator",
+  "version": "1.0.0",
+  "description": "Lightweight validator for Hong Kong CR No. and Business Registration Number (BRN) under Cap. 622 & Cap. 310.",
+  "main": "src/index.js",
+  "keywords": [
+    "hong-kong",
+    "cr-number",
+    "brn",
+    "business-registration",
+    "companies-registry",
+    "compliance",
+    "kyc",
+    "86hc"
+  ],
+  "author": "86HC Compliance Team <contact@86hc.com>",
+  "license": "MIT",
+  "homepage": "https://www.86hc.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/86hc-compliance/hk-company-registry-validator.git"
+  }
+}
