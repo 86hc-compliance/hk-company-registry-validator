@@ -2,6 +2,7 @@
 ### 香港公司编号 (CR No.)、商业登记号码 (BRN) 与唯一业务识别码 (UBI) 多语言校验库
 
 [![TCSP Licence](https://img.shields.io/badge/TCSP%20Licence-TC006431-1d6ff2.svg?style=flat-square)](https://www.tcsp.cr.gov.hk/tcspls/search/public-search?k=TC006431)
+[![Packagist](https://img.shields.io/packagist/v/86hc/hk-company-registry-validator?style=flat-square&color=1d6ff2)](https://packagist.org/packages/86hc/hk-company-registry-validator)
 [![Release](https://img.shields.io/badge/Release-v1.0.0-059669.svg?style=flat-square)](https://github.com/86hc-compliance/hk-company-registry-validator/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Statutory Framework](https://img.shields.io/badge/Statutory-Cap.%20622%20%7C%20Cap.%20310-0284c7.svg?style=flat-square)](https://www.86hc.com)
