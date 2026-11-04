@@ -1,0 +1,17 @@
+node_modules/
+.context/
+apps/platform/dist/
+apps/platform/data/
+apps/platform/.cloudflare/
+apps/platform/.dev.vars*
+!apps/platform/.dev.vars.example
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+.DS_Store
+__pycache__/
+.pytest_cache/
+build/
+*.egg-info/
+*.whl

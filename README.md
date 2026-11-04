@@ -11,6 +11,19 @@ A zero-dependency, multi-language (**Python / JavaScript / TypeScript / PHP**) v
 
 由香港公司注册处持牌信托或公司服务提供者 **恒诚商务有限公司 / HC BUSINESS LIMITED（[86hc.com](https://www.86hc.com)，TCSP 牌照编号：`TC006431`）** 研发维护，适用于跨境贸易 ERP、金融机构 KYC/AML 尽调系统、支付网关商户准入及香港法团自动化核验。
 
+> **Norby platform:** A runnable bilingual customer website, operations workspace and OAuth API/MCP now live in [`apps/platform`](apps/platform/README.md). The original validator package remains separate. See the [confirmed v1 specification](docs/norby-v1-spec.md). TPSI production acceptance and live operating details are still required before official Registry filing.
+
+The website and backend are deployed at **[www.norby.tw](https://www.norby.tw)** on Cloudflare Workers, D1, private R2 and Workflows. See the [deployment and recovery guide](docs/cloudflare-deployment.md). Official TPSI filing remains disabled pending credentials and acceptance.
+
+Start the Norby preview from this repository's root directory (Node.js 24+):
+
+```sh
+npm --prefix apps/platform ci # First run, or after dependency changes
+npm run dev
+```
+
+Open http://localhost:3100 and keep the terminal running. See the [platform setup](apps/platform/README.md#local-development) for staff access and configuration.
+
 ---
 
 ### 📌 支持的香港法定企业识别码规范 / Supported Statutory Identifiers
@@ -22,7 +35,7 @@ A zero-dependency, multi-language (**Python / JavaScript / TypeScript / PHP**) v
    - 由香港税务局商业登记署 (BRO) 依《商业登记条例》（第 310 章）核发。
    - 核心号码为 **8 位纯数字**（如 `66820292`）。
 3. **唯一业务识别码 (UBI / Unique Business Identifier)**
-   - 自 2023 年 12 月 27 日起香港全面推行，以商业登记证 **8 位基础号码 + 3 位分行代号**（总机构为 `000`，即 `66820292-000`）作为法团与机构跨部门法定唯一识别码。
+   - 公司注册处采用商业登记证号码的 **首 8 位数字**作为 UBI。校验库保留的 `66820292-000` 是基础号码加分行代号的格式，不应将其称为 UBI；请参阅[官方说明](https://www.cr.gov.hk/en/publications/docs/UBI_Flyer-e.pdf)。
 4. **未申领商业登记证临时替代号 (`C` + CR No.)**
    - 自动识别并拦截未申领商业登记证的 `C` 前缀临时编号（如 `C1413701`），防止非正式编号混入商业登记证主表。
 
@@ -39,7 +52,7 @@ from hk_validator.validator import HKCompanyValidator
 cr = HKCompanyValidator.validate_cr_number("2837074")
 # {'valid': True, 'error': None, 'raw': '2837074', 'formatted': '02837074', 'is_padded': True}
 
-# 校验 8 位商业登记号码 (BRN) 并生成唯一业务识别码 (UBI)
+# 校验 8 位商业登记号码 (BRN) 并生成兼容的基础号码／分行代号表示（旧版 ubi 字段名称保留）
 brn = HKCompanyValidator.validate_brn("66820292")
 # {'valid': True, 'is_unregistered_temp': False, 'error': None, 'base_brn': '66820292', 'branch_code': '000', 'ubi': '66820292-000', 'formatted': '66820292-000', 'slug': 'brn-66820292'}
 

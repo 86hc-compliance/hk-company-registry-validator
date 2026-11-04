@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "Lightweight validator for Hong Kong CR No. and Business Registration Number (BRN) under Cap. 622 & Cap. 310.",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "files": ["src/index.js", "src/index.d.ts", "LICENSE", "README.md"],
+  "scripts": {
+    "dev": "npm --prefix apps/platform run dev",
+    "test": "node --test tests/validator.test.js"
+  },
   "keywords": [
     "hong-kong",
     "cr-number",

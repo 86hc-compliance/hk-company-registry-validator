@@ -6,7 +6,7 @@
 
 const CR_REGEX = /^\d{7,8}$/;
 const BRN_8_REGEX = /^\d{8}$/;
-const BRN_EXTENDED_REGEX = /^(\d{8})[- ]?(\d{3})?/;
+const BRN_EXTENDED_REGEX = /^(\d{8})(?:[- ]?(\d{3}))?$/;
 
 function validateCRNumber(crNo) {
   if (!crNo) {
@@ -35,7 +35,7 @@ function validateBRN(brn) {
     return { valid: false, error: 'BRN cannot be empty', formatted: '' };
   }
   const raw = String(brn).trim();
-  const cleaned = raw.replace(/[-\s]/g, '');
+  const cleaned = raw;
 
   if (BRN_8_REGEX.test(cleaned)) {
     return {
